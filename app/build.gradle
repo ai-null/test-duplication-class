@@ -17,29 +17,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        debug {
-            storeFile file("$rootDir/debug.keystore")
-            keyAlias "androiddebugkey"
-            keyPassword "android"
-            storePassword "android"
-        }
-        release {
-            storeFile file("$rootDir/batama.jks")
-            storePassword "batama123"
-            keyAlias "key0"
-            keyPassword "batama123"
-        }
-    }
-
     buildTypes {
-        debug {
-            versionNameSuffix "-dev"
-            resValue "string", "app_name", "Toko Online Dev"
-            debuggable true
-            signingConfig signingConfigs.debug
-        }
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -57,27 +35,6 @@ android {
         buildConfig true
     }
     namespace 'com.example.tokoonline'
-
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-    flavorDimensions "version"
-    productFlavors {
-        sandbox {
-            // Assigns this product flavor to the "version" flavor dimension.
-            // If you are using only one dimension, this property is optional,
-            // and the plugin automatically assigns all the module's flavors to
-            // that dimension.
-            dimension "version"
-            buildConfigField "String", "CLIENT_KEY", properties.getProperty("clientKeySandBox")
-            buildConfigField "String", "SERVER_URL", properties.getProperty("serverUrl")
-        }
-        prod {
-            dimension "version"
-            buildConfigField "String", "CLIENT_KEY", properties.getProperty("clientKeyRelease")
-            buildConfigField "String", "SERVER_URL", properties.getProperty("serverUrl")
-        }
-    }
 }
 
 dependencies {
@@ -92,9 +49,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    debugImplementation "com.github.chuckerteam.chucker:library:4.0.0"
+    implementation "com.github.chuckerteam.chucker:library:4.0.0"
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:4.0.0"
 
     // Midtrans UI Kit
-    implementation 'com.midtrans:uikit:2.0.0'
+    debugImplementation 'com.midtrans:uikit:2.0.0-SANDBOX'
+    releaseImplementation 'com.midtrans:uikit:2.0.0'
 }
